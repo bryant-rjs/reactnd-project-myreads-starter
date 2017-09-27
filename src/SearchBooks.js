@@ -1,6 +1,11 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 class SearchBooks extends Component {
+  static propTypes = {
+    changePage: PropTypes.func
+  }
+  
   render() {
     return(
     <div className="search-books">
