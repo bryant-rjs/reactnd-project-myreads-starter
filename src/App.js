@@ -2,6 +2,7 @@ import React from 'react'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
 import * as BooksAPI from './BooksAPI'
+//import update from 'react-addons-update'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -28,6 +29,13 @@ class BooksApp extends React.Component {
     }))
   }
 
+  updateBookShelf = (value,book) => {
+    const newBook = book;
+    newBook.shelf = value;
+    this.setState(() => ({
+      books: this.state.books.map(b => {return (b.id === book.id) ? newBook : b})
+    }))
+  }
 
   render() {
     return (
@@ -38,6 +46,7 @@ class BooksApp extends React.Component {
         ) : (
           <ListBooks
             changePage={this.updatePage}
+            onUpdateShelf={this.updateBookShelf}
             books={this.state.books}
           />
         )}

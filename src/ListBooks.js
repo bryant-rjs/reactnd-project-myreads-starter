@@ -4,7 +4,15 @@ import PropTypes from 'prop-types'
 class ListBooks extends Component {
   static propTypes = {
     changePage: PropTypes.func,
+    onUpdateShelf: PropTypes.func,
     books: PropTypes.array
+  }
+
+  handleShelfSelect = (event,book) => {
+
+    console.log(event.target.value);
+    if(this.props.onUpdateShelf)
+      this.props.onUpdateShelf(event.target.value,book);
   }
 
   render() {
@@ -26,7 +34,7 @@ class ListBooks extends Component {
                         <div className="book-top">
                           <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
-                            <select value={book.shelf}>
+                            <select value={book.shelf} onChange={(event) => this.handleShelfSelect(event,book)}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
@@ -93,7 +101,7 @@ class ListBooks extends Component {
                         <div className="book-top">
                           <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
-                            <select value={book.shelf}>
+                            <select value={book.shelf} onChange={this.handleShelfSelect}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
@@ -159,7 +167,7 @@ class ListBooks extends Component {
                         <div className="book-top">
                           <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                           <div className="book-shelf-changer">
-                            <select value={book.shelf}>
+                            <select value={book.shelf} onChange={this.handleShelfSelect}>
                               <option value="none" disabled>Move to...</option>
                               <option value="currentlyReading">Currently Reading</option>
                               <option value="wantToRead">Want to Read</option>
