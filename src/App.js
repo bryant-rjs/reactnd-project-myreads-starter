@@ -29,12 +29,14 @@ class BooksApp extends React.Component {
     }))
   }
 
-  updateBookShelf = (value,book) => {
+  updateBookShelf = (book, value) => {
     const newBook = book;
     newBook.shelf = value;
     this.setState(() => ({
       books: this.state.books.map(b => {return (b.id === book.id) ? newBook : b})
     }))
+
+    BooksAPI.update(book,value);
   }
 
   render() {
@@ -42,7 +44,11 @@ class BooksApp extends React.Component {
       <div className="app">
         {console.log(this.state)}
         {this.state.showSearchPage ? (
-          <SearchBooks changePage={this.updatePage}/>
+          <SearchBooks
+            changePage={this.updatePage}
+            onUpdateShelf={this.updateBookShelf}
+            books={this.state.books}
+          />
         ) : (
           <ListBooks
             changePage={this.updatePage}
