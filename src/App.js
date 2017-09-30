@@ -39,6 +39,17 @@ class BooksApp extends React.Component {
     BooksAPI.update(book,value);
   }
 
+  updateSearchResults = (books) => {
+    const newBooks = books;
+    this.setState(() => ({
+      books: newBooks
+    }))
+  }
+
+  clearBooks = () => {
+    this.setState({ books: [] })
+  }
+
   render() {
     return (
       <div className="app">
@@ -48,6 +59,8 @@ class BooksApp extends React.Component {
             changePage={this.updatePage}
             onUpdateShelf={this.updateBookShelf}
             books={this.state.books}
+            onSearchQuery={this.updateSearchResults}
+            onEmptyResults={this.clearBooks}
           />
         ) : (
           <ListBooks

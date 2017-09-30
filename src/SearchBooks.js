@@ -1,11 +1,39 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
   static propTypes = {
     changePage: PropTypes.func,
     onUpdateShelf: PropTypes.func,
-    books: PropTypes.array
+    books: PropTypes.array,
+    onSearchQuery: PropTypes.func,
+    onEmptyResults: PropTypes.func
+  }
+
+  state = {
+    query: ''
+  }
+
+  handleShelfSelect = (book,event) => {
+    if(this.props.onUpdateShelf)
+      this.props.onUpdateShelf(book, event.target.value);
+  }
+  
+  handleQuery = (query) => {
+    this.setState({
+      query: query
+    });
+
+    if(query) {
+      BooksAPI.search(query,20).then(books => {
+        if(!books.error)
+          this.props.onSearchQuery(books);
+        else
+          this.props.onEmptyResults();
+      })
+    }
+    else { this.props.onEmptyResults(); }
   }
 
   render() {
@@ -22,11 +50,17 @@ class SearchBooks extends Component {
             However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
             you don't find a specific author or title. Every search is limited by search terms.
           */}
-          <input type="text" placeholder="Search by title or author"/>
+          <input
+            type="text"
+            placeholder="Search by title or author"
+            value={this.state.query}
+            onChange={event => this.handleQuery(event.target.value)}
+          />
 
         </div>
       </div>
       <div className="search-books-results">
+        {this.state.query}
         <ol className="books-grid">
           {this.props.books.map(book => (
             <li key={book.id}>
