@@ -5,7 +5,6 @@ import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
   static propTypes = {
-    changePage: PropTypes.func,
     onUpdateShelf: PropTypes.func,
     books: PropTypes.array,
     addNewBook: PropTypes.func
@@ -26,14 +25,12 @@ class SearchBooks extends Component {
       }
     }
     this.props.addNewBook(book, event.target.value);
-    console.log("**");
-    console.log(this.props.books);
   }
 
   getBookShelf = (book) => {
-    for(var k = 0; k < this.props.books.length; k++ ) {
-      if(book.id === this.props.books[k].id) {
-        return this.props.books[k].shelf;
+    for(var i = 0; i < this.props.books.length; i++ ) {
+      if(book.id === this.props.books[i].id) {
+        return this.props.books[i].shelf;
       }
     }
     return 'none';
@@ -45,6 +42,7 @@ class SearchBooks extends Component {
     });
 
     if(query) {
+
       BooksAPI.search(query,20).then(searchBooks => {
         if(!searchBooks.error) {
           searchBooks.map(book => book.shelf = this.getBookShelf(book));
@@ -63,7 +61,6 @@ class SearchBooks extends Component {
     return(
     <div className="search-books">
       <div className="search-books-bar">
-        {/* <a className="close-search" onClick={this.props.changePage}>Close</a> */}
         <Link
           to="/"
           className="close-search">
@@ -89,7 +86,6 @@ class SearchBooks extends Component {
       </div>
       <div className="search-books-results">
         {this.state.query}
-
         <ol className="books-grid">
           {this.state.searchBooks.map(book => (
             <li key={book.id}>

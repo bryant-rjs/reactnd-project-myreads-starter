@@ -3,7 +3,6 @@ import { Route } from 'react-router-dom'
 import SearchBooks from './SearchBooks'
 import ListBooks from './ListBooks'
 import * as BooksAPI from './BooksAPI'
-//import update from 'react-addons-update'
 import './App.css'
 
 class BooksApp extends React.Component {
@@ -24,34 +23,14 @@ class BooksApp extends React.Component {
     )
   }
 
-  updatePage = () => {
-    this.setState((state)=>({
-      showSearchPage: !state.showSearchPage
-    }))
-  }
-
   updateBookShelf = (book, value) => {
     const newBook = book;
     newBook.shelf = value;
     this.setState(() => ({
       books: this.state.books.map(b => {return (b.id === book.id) ? newBook : b})
     }))
-
     BooksAPI.update(book,value);
   }
-
-  // updateSearchResults = (books) => {
-  //   const newBooks = books;
-  //   this.setState(() => ({
-  //     books: newBooks
-  //   }))
-  // }
-
-  /*
-  clearBooks = () => {
-    this.setState({ books: [] })
-  }
-  */
 
   addBook = (book,value) => {
     const newBook = book;
@@ -62,44 +41,14 @@ class BooksApp extends React.Component {
     BooksAPI.update(book,value);
   }
 
-  /*
-  getBookById = (id) => {
-    //const myBook = this.state.books.filter(book => book.id === id);
-    var myBook = '';
-    for(var i = 0; i < this.state.books.length; i++ ) {
-      if(this.state.books[i].id === id) {
-        myBook = this.state.books[i];
-      }
-    }
-    return myBook;
-  }
-  */
-
   render() {
     return (
       <div className="app">
-        {console.log(this.state)}
-        {/* {this.state.showSearchPage ? (
-          <SearchBooks
-            changePage={this.updatePage}
-            onUpdateShelf={this.updateBookShelf}
-            books={this.state.books}
-            onSearchQuery={this.updateSearchResults}
-            addNewBook={this.addBook}
-          />
-        ) : (
-          <ListBooks
-            changePage={this.updatePage}
-            onUpdateShelf={this.updateBookShelf}
-            books={this.state.books}
-          />
-        )} */}
         <Route exact path='/' render={() => (
           <ListBooks
             onUpdateShelf={this.updateBookShelf}
             books={this.state.books}
           />
-
         )}/>
         <Route path="/search" render={() => (
           <SearchBooks

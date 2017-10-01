@@ -9,8 +9,6 @@ class ListBooks extends Component {
   }
 
   handleShelfSelect = (book,event) => {
-
-    console.log(event.target.value);
     if(this.props.onUpdateShelf)
       this.props.onUpdateShelf(book, event.target.value);
   }
@@ -113,11 +111,9 @@ class ListBooks extends Component {
           </div>
         </div>
         <div className="open-search">
-          {/* <a onClick={this.props.changePage}>Add a book</a> */}
           <Link to='/search'>
             Add a Book
           </Link>
-
         </div>
       </div>
     )
