@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 class ListBooks extends Component {
   static propTypes = {
-    changePage: PropTypes.func,
     onUpdateShelf: PropTypes.func,
     books: PropTypes.array
   }
@@ -106,14 +106,18 @@ class ListBooks extends Component {
                       </div>
                     </li>
                   ))}
-                  
+
                 </ol>
               </div>
             </div>
           </div>
         </div>
         <div className="open-search">
-          <a onClick={this.props.changePage}>Add a book</a>
+          {/* <a onClick={this.props.changePage}>Add a book</a> */}
+          <Link to='/search'>
+            Add a Book
+          </Link>
+
         </div>
       </div>
     )

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import * as BooksAPI from './BooksAPI'
 
@@ -7,8 +8,6 @@ class SearchBooks extends Component {
     changePage: PropTypes.func,
     onUpdateShelf: PropTypes.func,
     books: PropTypes.array,
-    onSearchQuery: PropTypes.func,
-    onEmptyResults: PropTypes.func,
     addNewBook: PropTypes.func
   }
 
@@ -21,12 +20,14 @@ class SearchBooks extends Component {
 
     // Check if book exists in our book array
     for(var i = 0; i < this.props.books.length; i++ ) {
-      if(book.id === this.props.books[i].id)
+      if(book.id === this.props.books[i].id) {
         this.props.onUpdateShelf(book, event.target.value);
-      else {
-        this.props.addNewBook(book, event.target.value);
+        return;
       }
     }
+    this.props.addNewBook(book, event.target.value);
+    console.log("**");
+    console.log(this.props.books);
   }
 
   getBookShelf = (book) => {
@@ -62,7 +63,12 @@ class SearchBooks extends Component {
     return(
     <div className="search-books">
       <div className="search-books-bar">
-        <a className="close-search" onClick={this.props.changePage}>Close</a>
+        {/* <a className="close-search" onClick={this.props.changePage}>Close</a> */}
+        <Link
+          to="/"
+          className="close-search">
+          Close
+        </Link>
         <div className="search-books-input-wrapper">
           {/*
             NOTES: The search from BooksAPI is limited to a particular set of search terms.
