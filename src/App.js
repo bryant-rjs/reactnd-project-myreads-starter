@@ -46,9 +46,31 @@ class BooksApp extends React.Component {
     }))
   }
 
+  /*
   clearBooks = () => {
     this.setState({ books: [] })
   }
+  */
+
+  addBook = (book,value) => {
+    this.setState(state => ({
+      books: state.books.concat([ book ])
+    }))
+    BooksAPI.update(book,value);
+  }
+
+  /*
+  getBookById = (id) => {
+    //const myBook = this.state.books.filter(book => book.id === id);
+    var myBook = '';
+    for(var i = 0; i < this.state.books.length; i++ ) {
+      if(this.state.books[i].id === id) {
+        myBook = this.state.books[i];
+      }
+    }
+    return myBook;
+  }
+  */
 
   render() {
     return (
@@ -60,7 +82,7 @@ class BooksApp extends React.Component {
             onUpdateShelf={this.updateBookShelf}
             books={this.state.books}
             onSearchQuery={this.updateSearchResults}
-            onEmptyResults={this.clearBooks}
+            addNewBook={this.addBook}
           />
         ) : (
           <ListBooks

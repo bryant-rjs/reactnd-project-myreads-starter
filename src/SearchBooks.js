@@ -8,32 +8,54 @@ class SearchBooks extends Component {
     onUpdateShelf: PropTypes.func,
     books: PropTypes.array,
     onSearchQuery: PropTypes.func,
-    onEmptyResults: PropTypes.func
+    onEmptyResults: PropTypes.func,
+    addNewBook: PropTypes.func
   }
 
   state = {
+    searchBooks: [],
     query: ''
   }
 
-  handleShelfSelect = (book,event) => {
-    if(this.props.onUpdateShelf)
-      this.props.onUpdateShelf(book, event.target.value);
+  handleSearchShelf = (book,event) => {
+
+    // Check if book exists in our book array
+    for(var i = 0; i < this.props.books.length; i++ ) {
+      if(book.id === this.props.books[i].id)
+        this.props.onUpdateShelf(book, event.target.value);
+      else {
+        this.props.addNewBook(book, event.target.value);
+      }
+    }
   }
-  
+
+  getBookShelf = (book) => {
+    for(var k = 0; k < this.props.books.length; k++ ) {
+      if(book.id === this.props.books[k].id) {
+        return this.props.books[k].shelf;
+      }
+    }
+    return 'none';
+  }
+
   handleQuery = (query) => {
     this.setState({
       query: query
     });
 
     if(query) {
-      BooksAPI.search(query,20).then(books => {
-        if(!books.error)
-          this.props.onSearchQuery(books);
-        else
-          this.props.onEmptyResults();
+      BooksAPI.search(query,20).then(searchBooks => {
+        if(!searchBooks.error) {
+          searchBooks.map(book => book.shelf = this.getBookShelf(book));
+          this.setState({ searchBooks: searchBooks })
+        }
+        else {
+          this.setState({ searchBooks: [] })
+        }
       })
+    } else {
+      this.setState({ searchBooks: [] })
     }
-    else { this.props.onEmptyResults(); }
   }
 
   render() {
@@ -61,15 +83,16 @@ class SearchBooks extends Component {
       </div>
       <div className="search-books-results">
         {this.state.query}
+
         <ol className="books-grid">
-          {this.props.books.map(book => (
+          {this.state.searchBooks.map(book => (
             <li key={book.id}>
               <div className="book">
                 <div className="book-top">
                   <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
                   <div className="book-shelf-changer">
-                    <select value={book.shelf} onChange={(event) => this.handleShelfSelect(book,event)}>
-                      <option value="none" disabled>Move to...</option>
+                    <select value={book.shelf} onChange={(event) => this.handleSearchShelf(book,event)}>
+                      <option value="moveTo" disabled>Move to...</option>
                       <option value="currentlyReading">Currently Reading</option>
                       <option value="wantToRead">Want to Read</option>
                       <option value="read">Read</option>
