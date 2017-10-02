@@ -36,16 +36,31 @@ class SearchBooks extends Component {
     return 'none';
   }
 
+  getImageLinks = (book) => {
+    if(book.imageLinks)
+      return book.imageLinks;
+    else {
+      return {
+        "smallThumbnail":"https://dummyimage.com/128x170/cccccc/000000.png&text=image+not+available",
+        "thumbnail":"https://dummyimage.com/128x193/cccccc/000000.png&text=image+not+available"
+      }
+    }
+  }
+
   handleQuery = (query) => {
     this.setState({
       query: query
     });
 
     if(query) {
-
       BooksAPI.search(query,20).then(searchBooks => {
+        searchBooks.map(book => (
+          console.log(book.imageLinks)
+        ))
         if(!searchBooks.error) {
           searchBooks.map(book => book.shelf = this.getBookShelf(book));
+          //searchBooks.map(book => {return (book.imageLinks) ? book.imageLinks : book.imageLinks = ''})
+          searchBooks.map(book => book.imageLinks = this.getImageLinks(book));
           this.setState({ searchBooks: searchBooks })
         }
         else {
