@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import Book from './Book'
 import * as BooksAPI from './BooksAPI'
 
 class SearchBooks extends Component {
@@ -29,6 +30,7 @@ class SearchBooks extends Component {
 
   getBookShelf = (book) => {
     for(var i = 0; i < this.props.books.length; i++ ) {
+      console.log(this.props.books[i].id);
       if(book.id === this.props.books[i].id) {
         return this.props.books[i].shelf;
       }
@@ -54,9 +56,9 @@ class SearchBooks extends Component {
 
     if(query) {
       BooksAPI.search(query,20).then(searchBooks => {
-        searchBooks.map(book => (
-          console.log(book.imageLinks)
-        ))
+        // searchBooks.map(book => (
+        //   console.log(book.imageLinks)
+        // ))
         if(!searchBooks.error) {
           searchBooks.map(book => book.shelf = this.getBookShelf(book));
           //searchBooks.map(book => {return (book.imageLinks) ? book.imageLinks : book.imageLinks = ''})
@@ -103,24 +105,31 @@ class SearchBooks extends Component {
         {this.state.query}
         <ol className="books-grid">
           {this.state.searchBooks.map(book => (
-            <li key={book.id}>
-              <div className="book">
-                <div className="book-top">
-                  <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
-                  <div className="book-shelf-changer">
-                    <select value={book.shelf} onChange={(event) => this.handleSearchShelf(book,event)}>
-                      <option value="moveTo" disabled>Move to...</option>
-                      <option value="currentlyReading">Currently Reading</option>
-                      <option value="wantToRead">Want to Read</option>
-                      <option value="read">Read</option>
-                      <option value="none">None</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="book-title">{book.title}</div>
-                <div className="book-authors">{book.authors}</div>
-              </div>
-            </li>
+            // <li key={book.id}>
+            //   <div className="book">
+            //     <div className="book-top">
+            //       <div className="book-cover" style={{width: 128, height: 193, backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+            //       <div className="book-shelf-changer">
+            //         <select value={book.shelf} onChange={(event) => this.handleSearchShelf(book,event)}>
+            //           <option value="moveTo" disabled>Move to...</option>
+            //           <option value="currentlyReading">Currently Reading</option>
+            //           <option value="wantToRead">Want to Read</option>
+            //           <option value="read">Read</option>
+            //           <option value="none">None</option>
+            //         </select>
+            //       </div>
+            //     </div>
+            //     <div className="book-title">{book.title}</div>
+            //     <div className="book-authors">{book.authors}</div>
+            //   </div>
+            // </li>
+            <Book
+              key={book.id}
+              book={book}
+              books={this.props.books}
+              onUpdateShelf={this.props.onUpdateShelf}
+              addNewBook={this.props.addNewBook}
+            />
           ))}
         </ol>
       </div>
