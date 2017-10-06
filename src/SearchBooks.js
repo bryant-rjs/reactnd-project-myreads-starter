@@ -16,17 +16,8 @@ class SearchBooks extends Component {
     query: ''
   }
 
-  handleSearchShelf = (book,event) => {
-    // Check if book exists in our book array
-    for(var i = 0; i < this.props.books.length; i++ ) {
-      if(book.id === this.props.books[i].id) {
-        this.props.onUpdateShelf(book, event.target.value);
-        return;
-      }
-    }
-    this.props.addNewBook(book, event.target.value);
-  }
-
+  // Gets a book's current shelf from the books currently on a shelf.
+  // Or returns 'none' if not on a shelf
   getBookShelf = (book) => {
     for(var i = 0; i < this.props.books.length; i++ ) {
       if(book.id === this.props.books[i].id) {
@@ -36,6 +27,8 @@ class SearchBooks extends Component {
     return 'none';
   }
 
+  // Gets a book's image links.
+  // Sets to dummy cover image if doesn't have a thumbnail.
   getImageLinks = (book) => {
     if(book.imageLinks)
       return book.imageLinks;
@@ -47,6 +40,7 @@ class SearchBooks extends Component {
     }
   }
 
+  // Handles search input.
   handleQuery = (query) => {
     this.setState({
       query: query

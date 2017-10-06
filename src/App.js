@@ -22,6 +22,7 @@ class BooksApp extends React.Component {
     )
   }
 
+  // Updates a book's shelf location
   updateBookShelf = (book, value) => {
     const newBook = book;
     newBook.shelf = value;
@@ -31,6 +32,7 @@ class BooksApp extends React.Component {
     BooksAPI.update(book,value);
   }
 
+  // Adds a new book to the shelves (From the Search Page)
   addBook = (book,value) => {
     const newBook = book;
     newBook.shelf = value;
